@@ -1,8 +1,8 @@
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_video_player.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'video_player_screen_model.dart';
 export 'video_player_screen_model.dart';
@@ -113,18 +113,15 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                             decoration: const BoxDecoration(
                               color: Color(0xFF0D0D0D),
                             ),
-                            child: FlutterFlowVideoPlayer(
-                              path:
-                                  'https://www.sample-videos.com/video321/mp4/720/big_buck_bunny_720p_20mb.mp4',
-                              videoType: VideoType.network,
+                            child: SizedBox(
                               width: MediaQuery.sizeOf(context).width * 1.0,
-                              height: MediaQuery.sizeOf(context).height * 0.5,
-                              aspectRatio: 0.56,
-                              autoPlay: true,
-                              looping: true,
-                              showControls: true,
-                              allowFullScreen: true,
-                              allowPlaybackSpeedMenu: true,
+                              height: MediaQuery.sizeOf(context).height * 1.0,
+                              child: custom_widgets.BetterPlayerWidget(
+                                width: MediaQuery.sizeOf(context).width * 1.0,
+                                height: MediaQuery.sizeOf(context).height * 1.0,
+                                videoUrl:
+                                    'https://cdn.memesplanet.com/videos/lOGdxQwVBXuTVww4WghtxMilATYqWzJD/4cf7a085c9e72230531169dadd25e5e8.m3u8',
+                              ),
                             ),
                           ),
                         ],
