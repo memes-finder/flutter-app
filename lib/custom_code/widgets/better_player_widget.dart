@@ -1,5 +1,6 @@
 // Automatic FlutterFlow imports
 import '/backend/schema/structs/index.dart';
+import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'index.dart'; // Imports other custom widgets
@@ -41,10 +42,10 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
     );
     _betterPlayerController = BetterPlayerController(
       BetterPlayerConfiguration(
-        aspectRatio: 16 / 9,
+        aspectRatio: 9 / 16,
         fit: BoxFit.contain,
         autoPlay: true,
-        looping: false,
+        looping: true,
       ),
       betterPlayerDataSource: dataSource,
     );

@@ -54,7 +54,36 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'VideoPlayerScreen',
           path: '/videoPlayerScreen',
-          builder: (context, params) => const VideoPlayerScreenWidget(),
+          builder: (context, params) => VideoPlayerScreenWidget(
+            videoMeme: params.getParam(
+              'videoMeme',
+              ParamType.DataStruct,
+              isList: false,
+              structBuilder: HomeMemeVideoStruct.fromSerializableMap,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'SearchResults',
+          path: '/searchResults',
+          builder: (context, params) => SearchResultsWidget(
+            searchQuery: params.getParam(
+              'searchQuery',
+              ParamType.String,
+            ),
+            searchResultVideos: params.getParam<HomeMemeVideoStruct>(
+              'searchResultVideos',
+              ParamType.DataStruct,
+              isList: true,
+              structBuilder: HomeMemeVideoStruct.fromSerializableMap,
+            ),
+            searchResultImages: params.getParam<HomeMemesImageStruct>(
+              'searchResultImages',
+              ParamType.DataStruct,
+              isList: true,
+              structBuilder: HomeMemesImageStruct.fromSerializableMap,
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

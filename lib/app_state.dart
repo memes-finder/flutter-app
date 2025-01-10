@@ -110,4 +110,93 @@ class FFAppState extends ChangeNotifier {
   void insertAtIndexInHomeVideosAppState(int index, HomeMemeVideoStruct value) {
     homeVideosAppState.insert(index, value);
   }
+
+  List<MemesSearchStruct> _searchResults = [];
+  List<MemesSearchStruct> get searchResults => _searchResults;
+  set searchResults(List<MemesSearchStruct> value) {
+    _searchResults = value;
+  }
+
+  void addToSearchResults(MemesSearchStruct value) {
+    searchResults.add(value);
+  }
+
+  void removeFromSearchResults(MemesSearchStruct value) {
+    searchResults.remove(value);
+  }
+
+  void removeAtIndexFromSearchResults(int index) {
+    searchResults.removeAt(index);
+  }
+
+  void updateSearchResultsAtIndex(
+    int index,
+    MemesSearchStruct Function(MemesSearchStruct) updateFn,
+  ) {
+    searchResults[index] = updateFn(_searchResults[index]);
+  }
+
+  void insertAtIndexInSearchResults(int index, MemesSearchStruct value) {
+    searchResults.insert(index, value);
+  }
+
+  List<HomeMemesImageStruct> _searchImagesAppState = [];
+  List<HomeMemesImageStruct> get searchImagesAppState => _searchImagesAppState;
+  set searchImagesAppState(List<HomeMemesImageStruct> value) {
+    _searchImagesAppState = value;
+  }
+
+  void addToSearchImagesAppState(HomeMemesImageStruct value) {
+    searchImagesAppState.add(value);
+  }
+
+  void removeFromSearchImagesAppState(HomeMemesImageStruct value) {
+    searchImagesAppState.remove(value);
+  }
+
+  void removeAtIndexFromSearchImagesAppState(int index) {
+    searchImagesAppState.removeAt(index);
+  }
+
+  void updateSearchImagesAppStateAtIndex(
+    int index,
+    HomeMemesImageStruct Function(HomeMemesImageStruct) updateFn,
+  ) {
+    searchImagesAppState[index] = updateFn(_searchImagesAppState[index]);
+  }
+
+  void insertAtIndexInSearchImagesAppState(
+      int index, HomeMemesImageStruct value) {
+    searchImagesAppState.insert(index, value);
+  }
+
+  List<HomeMemeVideoStruct> _searchVideosAppState = [];
+  List<HomeMemeVideoStruct> get searchVideosAppState => _searchVideosAppState;
+  set searchVideosAppState(List<HomeMemeVideoStruct> value) {
+    _searchVideosAppState = value;
+  }
+
+  void addToSearchVideosAppState(HomeMemeVideoStruct value) {
+    searchVideosAppState.add(value);
+  }
+
+  void removeFromSearchVideosAppState(HomeMemeVideoStruct value) {
+    searchVideosAppState.remove(value);
+  }
+
+  void removeAtIndexFromSearchVideosAppState(int index) {
+    searchVideosAppState.removeAt(index);
+  }
+
+  void updateSearchVideosAppStateAtIndex(
+    int index,
+    HomeMemeVideoStruct Function(HomeMemeVideoStruct) updateFn,
+  ) {
+    searchVideosAppState[index] = updateFn(_searchVideosAppState[index]);
+  }
+
+  void insertAtIndexInSearchVideosAppState(
+      int index, HomeMemeVideoStruct value) {
+    searchVideosAppState.insert(index, value);
+  }
 }

@@ -16,7 +16,9 @@ class TrendingTagsCall {
       callName: 'Trending Tags',
       apiUrl: 'https://memesplanet.com/api/tags/trending',
       callType: ApiCallType.GET,
-      headers: {},
+      headers: {
+        'Content-Type': 'application/json',
+      },
       params: {
         'lang': "ar",
       },
@@ -42,14 +44,25 @@ class TrendingTagsCall {
 }
 
 class HomeMemesImagesCall {
-  static Future<ApiCallResponse> call() async {
+  static Future<ApiCallResponse> call({
+    String? q,
+    int? page = 1,
+    String? tags,
+  }) async {
+    q ??= '';
+    tags ??= '';
+
     return ApiManager.instance.makeApiCall(
       callName: 'Home Memes Images',
       apiUrl: 'https://memesplanet.com/api/search',
       callType: ApiCallType.GET,
-      headers: {},
+      headers: {
+        'Content-Type': 'application/json',
+      },
       params: {
-        'q': "ميم",
+        'q': q,
+        'page': page,
+        'tags': tags,
         'type': "image",
       },
       returnBody: true,
@@ -69,15 +82,26 @@ class HomeMemesImagesCall {
 }
 
 class HomeMemesVideosCall {
-  static Future<ApiCallResponse> call() async {
+  static Future<ApiCallResponse> call({
+    String? q,
+    int? page = 1,
+    String? tags,
+  }) async {
+    q ??= '';
+    tags ??= '';
+
     return ApiManager.instance.makeApiCall(
       callName: 'Home Memes Videos',
       apiUrl: 'https://memesplanet.com/api/search',
       callType: ApiCallType.GET,
-      headers: {},
+      headers: {
+        'Content-Type': 'application/json',
+      },
       params: {
-        'q': "photo",
+        'q': q,
         'type': "video",
+        'tags': tags,
+        'page': page,
       },
       returnBody: true,
       encodeBodyUtf8: false,
@@ -93,6 +117,88 @@ class HomeMemesVideosCall {
         response,
         r'''$.data.items''',
       ));
+}
+
+class SearchMemesCall {
+  static Future<ApiCallResponse> call({
+    String? q = 'ميم',
+    int? page = 1,
+    String? tags = '',
+    String? type = '',
+  }) async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'Search Memes',
+      apiUrl: 'https://memesplanet.com/api/search',
+      callType: ApiCallType.GET,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        'q': q,
+        'page': page,
+        'type': type,
+        'tags': tags,
+      },
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: true,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  static MemesSearchStruct? apiSearchResult(dynamic response) =>
+      MemesSearchStruct.maybeFromMap(getJsonField(
+        response,
+        r'''$.data.items''',
+      ));
+}
+
+class MemePostLaughCall {
+  static Future<ApiCallResponse> call({
+    String? id = '0',
+  }) async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'Meme Post Laugh',
+      apiUrl: 'https://memesplanet.com/api/memes/laugh/$id',
+      callType: ApiCallType.POST,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {},
+      bodyType: BodyType.NONE,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class IncMemeViewCall {
+  static Future<ApiCallResponse> call({
+    String? id = '0',
+  }) async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'Inc Meme View',
+      apiUrl: 'https://memesplanet.com/api/memes/view/$id',
+      callType: ApiCallType.POST,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {},
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
 }
 
 class ApiPagingParams {

@@ -11,11 +11,17 @@ class HomeMemesImageStruct extends BaseStruct {
     String? height,
     String? url,
     MemeTagsStruct? tags,
+    int? laughsCount,
+    int? viewsCount,
+    String? type,
   })  : _id = id,
         _width = width,
         _height = height,
         _url = url,
-        _tags = tags;
+        _tags = tags,
+        _laughsCount = laughsCount,
+        _viewsCount = viewsCount,
+        _type = type;
 
   // "id" field.
   String? _id;
@@ -56,6 +62,31 @@ class HomeMemesImageStruct extends BaseStruct {
 
   bool hasTags() => _tags != null;
 
+  // "laughs_count" field.
+  int? _laughsCount;
+  int get laughsCount => _laughsCount ?? 0;
+  set laughsCount(int? val) => _laughsCount = val;
+
+  void incrementLaughsCount(int amount) => laughsCount = laughsCount + amount;
+
+  bool hasLaughsCount() => _laughsCount != null;
+
+  // "views_count" field.
+  int? _viewsCount;
+  int get viewsCount => _viewsCount ?? 0;
+  set viewsCount(int? val) => _viewsCount = val;
+
+  void incrementViewsCount(int amount) => viewsCount = viewsCount + amount;
+
+  bool hasViewsCount() => _viewsCount != null;
+
+  // "type" field.
+  String? _type;
+  String get type => _type ?? 'image';
+  set type(String? val) => _type = val;
+
+  bool hasType() => _type != null;
+
   static HomeMemesImageStruct fromMap(Map<String, dynamic> data) =>
       HomeMemesImageStruct(
         id: data['id'] as String?,
@@ -65,6 +96,9 @@ class HomeMemesImageStruct extends BaseStruct {
         tags: data['tags'] is MemeTagsStruct
             ? data['tags']
             : MemeTagsStruct.maybeFromMap(data['tags']),
+        laughsCount: castToType<int>(data['laughs_count']),
+        viewsCount: castToType<int>(data['views_count']),
+        type: data['type'] as String?,
       );
 
   static HomeMemesImageStruct? maybeFromMap(dynamic data) => data is Map
@@ -77,6 +111,9 @@ class HomeMemesImageStruct extends BaseStruct {
         'height': _height,
         'url': _url,
         'tags': _tags?.toMap(),
+        'laughs_count': _laughsCount,
+        'views_count': _viewsCount,
+        'type': _type,
       }.withoutNulls;
 
   @override
@@ -100,6 +137,18 @@ class HomeMemesImageStruct extends BaseStruct {
         'tags': serializeParam(
           _tags,
           ParamType.DataStruct,
+        ),
+        'laughs_count': serializeParam(
+          _laughsCount,
+          ParamType.int,
+        ),
+        'views_count': serializeParam(
+          _viewsCount,
+          ParamType.int,
+        ),
+        'type': serializeParam(
+          _type,
+          ParamType.String,
         ),
       }.withoutNulls;
 
@@ -131,6 +180,21 @@ class HomeMemesImageStruct extends BaseStruct {
           false,
           structBuilder: MemeTagsStruct.fromSerializableMap,
         ),
+        laughsCount: deserializeParam(
+          data['laughs_count'],
+          ParamType.int,
+          false,
+        ),
+        viewsCount: deserializeParam(
+          data['views_count'],
+          ParamType.int,
+          false,
+        ),
+        type: deserializeParam(
+          data['type'],
+          ParamType.String,
+          false,
+        ),
       );
 
   @override
@@ -143,11 +207,15 @@ class HomeMemesImageStruct extends BaseStruct {
         width == other.width &&
         height == other.height &&
         url == other.url &&
-        tags == other.tags;
+        tags == other.tags &&
+        laughsCount == other.laughsCount &&
+        viewsCount == other.viewsCount &&
+        type == other.type;
   }
 
   @override
-  int get hashCode => const ListEquality().hash([id, width, height, url, tags]);
+  int get hashCode => const ListEquality()
+      .hash([id, width, height, url, tags, laughsCount, viewsCount, type]);
 }
 
 HomeMemesImageStruct createHomeMemesImageStruct({
@@ -156,6 +224,9 @@ HomeMemesImageStruct createHomeMemesImageStruct({
   String? height,
   String? url,
   MemeTagsStruct? tags,
+  int? laughsCount,
+  int? viewsCount,
+  String? type,
 }) =>
     HomeMemesImageStruct(
       id: id,
@@ -163,4 +234,7 @@ HomeMemesImageStruct createHomeMemesImageStruct({
       height: height,
       url: url,
       tags: tags ?? MemeTagsStruct(),
+      laughsCount: laughsCount,
+      viewsCount: viewsCount,
+      type: type,
     );

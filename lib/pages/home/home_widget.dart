@@ -1,9 +1,14 @@
+import '/backend/schema/structs/index.dart';
 import '/components/carousel_meme_primary_tags_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/actions/actions.dart' as action_blocks;
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'home_model.dart';
 export 'home_model.dart';
@@ -74,7 +79,25 @@ class _HomeWidgetState extends State<HomeWidget> {
                 ),
               ].divide(const SizedBox(height: 4.0)),
             ),
-            actions: const [],
+            actions: [
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+                child: FlutterFlowIconButton(
+                  borderRadius: 8.0,
+                  buttonSize: 40.0,
+                  fillColor: FlutterFlowTheme.of(context).primary,
+                  icon: Icon(
+                    Icons.change_circle,
+                    color: FlutterFlowTheme.of(context).info,
+                    size: 24.0,
+                  ),
+                  onPressed: () async {
+                    await action_blocks.getHomeContent(context);
+                    safeSetState(() {});
+                  },
+                ),
+              ),
+            ],
             centerTitle: false,
             toolbarHeight: 72.0,
             elevation: 0.0,
@@ -88,15 +111,50 @@ class _HomeWidgetState extends State<HomeWidget> {
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 12.0),
+                        const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 10.0, 12.0),
                     child: TextFormField(
                       controller: _model.textController,
                       focusNode: _model.textFieldFocusNode,
+                      onChanged: (_) => EasyDebounce.debounce(
+                        '_model.textController',
+                        const Duration(milliseconds: 2000),
+                        () => safeSetState(() {}),
+                      ),
+                      onFieldSubmitted: (_) async {
+                        await action_blocks.searchMemes(
+                          context,
+                          searchQuery: _model.textController.text,
+                          page: 1,
+                          tags: '',
+                          type: '',
+                        );
+
+                        context.pushNamed(
+                          'SearchResults',
+                          queryParameters: {
+                            'searchQuery': serializeParam(
+                              _model.textController.text,
+                              ParamType.String,
+                            ),
+                            'searchResultVideos': serializeParam(
+                              FFAppState().searchVideosAppState,
+                              ParamType.DataStruct,
+                              isList: true,
+                            ),
+                            'searchResultImages': serializeParam(
+                              FFAppState().searchImagesAppState,
+                              ParamType.DataStruct,
+                              isList: true,
+                            ),
+                          }.withoutNulls,
+                        );
+                      },
                       autofocus: false,
                       textCapitalization: TextCapitalization.sentences,
+                      textInputAction: TextInputAction.search,
                       obscureText: false,
                       decoration: InputDecoration(
-                        labelText: 'Search...',
+                        labelText: 'Search memes...',
                         labelStyle:
                             FlutterFlowTheme.of(context).labelMedium.override(
                                   fontFamily: 'Inter',
@@ -154,6 +212,18 @@ class _HomeWidgetState extends State<HomeWidget> {
                               : FlutterFlowTheme.of(context).secondaryText,
                           size: 24.0,
                         ),
+                        suffixIcon: _model.textController!.text.isNotEmpty
+                            ? InkWell(
+                                onTap: () async {
+                                  _model.textController?.clear();
+                                  safeSetState(() {});
+                                },
+                                child: const Icon(
+                                  Icons.clear,
+                                  size: 22,
+                                ),
+                              )
+                            : null,
                       ),
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Inter',
@@ -186,7 +256,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                           child: FlutterFlowChoiceChips(
                             options: FFAppState()
                                 .trendingTagsAppState
-                                .map((e) => e.tag)
+                                .map((e) => valueOrDefault<String>(
+                                      e.tag,
+                                      'tag',
+                                    ))
                                 .toList()
                                 .map((label) => ChipData(label))
                                 .toList(),
@@ -234,11 +307,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                             chipSpacing: 12.0,
                             rowSpacing: 12.0,
                             multiselect: false,
-                            initialized: _model.choiceChipsValue != null,
                             alignment: WrapAlignment.start,
                             controller: _model.choiceChipsValueController ??=
                                 FormFieldController<List<String>>(
-                              ['Filter One'],
+                              [],
                             ),
                             wrapped: false,
                           ),
@@ -322,14 +394,104 @@ class _HomeWidgetState extends State<HomeWidget> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.stretch,
                                             children: [
-                                              CarouselMemePrimaryTagsWidget(
-                                                key: Key(
-                                                    'Key69y_${homeImagesCarouselIndex}_of_${homeImagesCarousel.length}'),
-                                                parameter1:
-                                                    homeImagesCarouselItem
-                                                        .tags.secondary
-                                                        .take(5)
-                                                        .toList(),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Icon(
+                                                    Icons.image_outlined,
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                    size: 20.0,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 0.0,
+                                                                12.0, 0.0),
+                                                    child: Text(
+                                                      valueOrDefault<String>(
+                                                        homeImagesCarouselItem
+                                                            .type,
+                                                        'image',
+                                                      ),
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .labelSmall
+                                                          .override(
+                                                            fontFamily: 'Inter',
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 0.0,
+                                                                4.0, 0.0),
+                                                    child: FaIcon(
+                                                      FontAwesomeIcons
+                                                          .solidLaughSquint,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryText,
+                                                      size: 15.0,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 0.0,
+                                                                16.0, 0.0),
+                                                    child: Text(
+                                                      valueOrDefault<String>(
+                                                        homeImagesCarouselItem
+                                                            .laughsCount
+                                                            .toString(),
+                                                        '0',
+                                                      ),
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .labelSmall
+                                                          .override(
+                                                            fontFamily: 'Inter',
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 0.0,
+                                                                4.0, 0.0),
+                                                    child: Icon(
+                                                      Icons.remove_red_eye,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                      size: 20.0,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    valueOrDefault<String>(
+                                                      homeImagesCarouselItem
+                                                          .viewsCount
+                                                          .toString(),
+                                                      '0',
+                                                    ),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .labelSmall
+                                                        .override(
+                                                          fontFamily: 'Inter',
+                                                          letterSpacing: 0.0,
+                                                        ),
+                                                  ),
+                                                ],
                                               ),
                                             ].divide(const SizedBox(height: 4.0)),
                                           ),
@@ -345,16 +507,58 @@ class _HomeWidgetState extends State<HomeWidget> {
                       },
                     ),
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
-                    child: Text(
-                      'Video Memes',
-                      style: FlutterFlowTheme.of(context).bodyLarge.override(
-                            fontFamily: 'Inter',
-                            letterSpacing: 0.0,
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Align(
+                            alignment: const AlignmentDirectional(-1.0, 0.0),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 0.0, 0.0, 0.0),
+                              child: Text(
+                                'Video Memes',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyLarge
+                                    .override(
+                                      fontFamily: 'Inter',
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
+                            ),
                           ),
-                    ),
+                        ],
+                      ),
+                      Flexible(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: const AlignmentDirectional(1.0, 0.0),
+                              child: FlutterFlowIconButton(
+                                borderRadius: 8.0,
+                                buttonSize: 35.0,
+                                fillColor: FlutterFlowTheme.of(context).primary,
+                                icon: Icon(
+                                  Icons.arrow_forward,
+                                  color: FlutterFlowTheme.of(context).info,
+                                  size: 20.0,
+                                ),
+                                onPressed: () {
+                                  print('IconButton pressed ...');
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]
+                        .addToStart(const SizedBox(width: 3.0))
+                        .addToEnd(const SizedBox(width: 15.0)),
                   ),
 
                   // This list view is "shrink wrapped" this can affect your app performance, we would suggest limiting the number of items you query in this list view.
@@ -427,7 +631,38 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                       Colors.transparent,
                                                   onTap: () async {
                                                     context.pushNamed(
-                                                        'VideoPlayerScreen');
+                                                      'VideoPlayerScreen',
+                                                      queryParameters: {
+                                                        'videoMeme':
+                                                            serializeParam(
+                                                          HomeMemeVideoStruct(
+                                                            url:
+                                                                homeVideosCarouselItem
+                                                                    .url,
+                                                            tags:
+                                                                MemeTagsStruct(
+                                                              primary:
+                                                                  homeVideosCarouselItem
+                                                                      .tags
+                                                                      .primary,
+                                                              secondary:
+                                                                  homeVideosCarouselItem
+                                                                      .tags
+                                                                      .secondary,
+                                                            ),
+                                                            laughsCount:
+                                                                homeVideosCarouselItem
+                                                                    .laughsCount,
+                                                            viewsCount:
+                                                                homeVideosCarouselItem
+                                                                    .viewsCount,
+                                                            id: homeVideosCarouselItem
+                                                                .id,
+                                                          ),
+                                                          ParamType.DataStruct,
+                                                        ),
+                                                      }.withoutNulls,
+                                                    );
                                                   },
                                                   child: ClipRRect(
                                                     borderRadius:

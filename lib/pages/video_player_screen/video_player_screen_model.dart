@@ -1,9 +1,17 @@
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'video_player_screen_widget.dart' show VideoPlayerScreenWidget;
 import 'package:flutter/material.dart';
 
 class VideoPlayerScreenModel extends FlutterFlowModel<VideoPlayerScreenWidget> {
+  ///  Local state fields for this page.
+
+  HomeMemeVideoStruct? videoMemeLocal;
+  void updateVideoMemeLocalStruct(Function(HomeMemeVideoStruct) updateFn) {
+    updateFn(videoMemeLocal ??= HomeMemeVideoStruct());
+  }
+
   ///  State fields for stateful widgets in this page.
 
   // State field(s) for ChoiceChips widget.

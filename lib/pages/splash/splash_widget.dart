@@ -1,11 +1,9 @@
-import '/backend/api_requests/api_calls.dart';
-import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/actions/actions.dart' as action_blocks;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:provider/provider.dart';
 import 'splash_model.dart';
 export 'splash_model.dart';
 
@@ -28,50 +26,9 @@ class _SplashWidgetState extends State<SplashWidget> {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await Future.wait([
-        Future(() async {
-          _model.apiResultTrendingTags = await TrendingTagsCall.call();
+      await action_blocks.getHomeContent(context);
 
-          FFAppState().trendingTagsAppState = TrendingTagsCall.trendingTagsList(
-            (_model.apiResultTrendingTags?.jsonBody ?? ''),
-          )!
-              .toList()
-              .cast<TrendingTagsItemStruct>();
-        }),
-        Future(() async {
-          _model.apiResultHomeMemesImages = await HomeMemesImagesCall.call();
-
-          FFAppState().homeImagesAppState = (getJsonField(
-            (_model.apiResultHomeMemesImages?.jsonBody ?? ''),
-            r'''$.data.items''',
-            true,
-          )!
-                  .toList()
-                  .map<HomeMemesImageStruct?>(HomeMemesImageStruct.maybeFromMap)
-                  .toList() as Iterable<HomeMemesImageStruct?>)
-              .withoutNulls
-              .toList()
-              .cast<HomeMemesImageStruct>();
-        }),
-        Future(() async {
-          _model.apiResultHomeMemesVideos = await HomeMemesVideosCall.call();
-
-          FFAppState().homeVideosAppState = (getJsonField(
-            (_model.apiResultHomeMemesVideos?.jsonBody ?? ''),
-            r'''$.data.items''',
-            true,
-          )!
-                  .toList()
-                  .map<HomeMemeVideoStruct?>(HomeMemeVideoStruct.maybeFromMap)
-                  .toList() as Iterable<HomeMemeVideoStruct?>)
-              .withoutNulls
-              .toList()
-              .cast<HomeMemeVideoStruct>();
-          safeSetState(() {});
-        }),
-      ]);
-
-      context.pushNamed('Home');
+      context.goNamed('Home');
     });
   }
 
@@ -84,8 +41,6 @@ class _SplashWidgetState extends State<SplashWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
