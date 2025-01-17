@@ -199,4 +199,35 @@ class FFAppState extends ChangeNotifier {
       int index, HomeMemeVideoStruct value) {
     searchVideosAppState.insert(index, value);
   }
+
+  List<SuggestedTagsItemStruct> _suggestedTagsAppState = [];
+  List<SuggestedTagsItemStruct> get suggestedTagsAppState =>
+      _suggestedTagsAppState;
+  set suggestedTagsAppState(List<SuggestedTagsItemStruct> value) {
+    _suggestedTagsAppState = value;
+  }
+
+  void addToSuggestedTagsAppState(SuggestedTagsItemStruct value) {
+    suggestedTagsAppState.add(value);
+  }
+
+  void removeFromSuggestedTagsAppState(SuggestedTagsItemStruct value) {
+    suggestedTagsAppState.remove(value);
+  }
+
+  void removeAtIndexFromSuggestedTagsAppState(int index) {
+    suggestedTagsAppState.removeAt(index);
+  }
+
+  void updateSuggestedTagsAppStateAtIndex(
+    int index,
+    SuggestedTagsItemStruct Function(SuggestedTagsItemStruct) updateFn,
+  ) {
+    suggestedTagsAppState[index] = updateFn(_suggestedTagsAppState[index]);
+  }
+
+  void insertAtIndexInSuggestedTagsAppState(
+      int index, SuggestedTagsItemStruct value) {
+    suggestedTagsAppState.insert(index, value);
+  }
 }

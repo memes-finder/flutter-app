@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
 import 'api_manager.dart';
+import 'interceptors.dart';
 
 export 'api_manager.dart' show ApiCallResponse;
 
@@ -43,27 +44,17 @@ class TrendingTagsCall {
           .toList();
 }
 
-class HomeMemesImagesCall {
-  static Future<ApiCallResponse> call({
-    String? q,
-    int? page = 1,
-    String? tags,
-  }) async {
-    q ??= '';
-    tags ??= '';
-
+class SuggestedTagsCall {
+  static Future<ApiCallResponse> call() async {
     return ApiManager.instance.makeApiCall(
-      callName: 'Home Memes Images',
-      apiUrl: 'https://memesplanet.com/api/search',
+      callName: 'Suggested Tags',
+      apiUrl: 'https://memesplanet.com/api/tags/suggestions',
       callType: ApiCallType.GET,
       headers: {
         'Content-Type': 'application/json',
       },
       params: {
-        'q': q,
-        'page': page,
-        'tags': tags,
-        'type': "image",
+        'lang': "ar",
       },
       returnBody: true,
       encodeBodyUtf8: false,
@@ -74,49 +65,124 @@ class HomeMemesImagesCall {
     );
   }
 
-  static HomeMemesImageStruct? homeMemesImages(dynamic response) =>
-      HomeMemesImageStruct.maybeFromMap(getJsonField(
+  static List<SuggestedTagsItemStruct>? suggestedTagsList(dynamic response) =>
+      (getJsonField(
+        response,
+        r'''$.data.suggestions''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => SuggestedTagsItemStruct.maybeFromMap(x))
+          .withoutNulls
+          .toList();
+}
+
+class HomeMemesImagesCall {
+  static Future<ApiCallResponse> call({
+    String? q,
+    int? page = 0,
+    String? tags,
+    int? limit = 10,
+    bool? isAll,
+  }) async {
+    q ??= '';
+    tags ??= '';
+
+    return FFApiInterceptor.makeApiCall(
+      ApiCallOptions(
+        callName: 'Home Memes Images',
+        apiUrl: 'https://memesplanet.com/api/search',
+        callType: ApiCallType.GET,
+        headers: const {
+          'Content-Type': 'application/json',
+        },
+        params: {
+          'q': q,
+          'page': page,
+          'tags': tags,
+          'type': "image",
+          'limit': limit,
+          'all': isAll,
+        },
+        returnBody: true,
+        encodeBodyUtf8: false,
+        decodeUtf8: true,
+        cache: false,
+        isStreamingApi: false,
+        alwaysAllowBody: false,
+      ),
+      interceptors,
+    );
+  }
+
+  static final interceptors = [
+    SearchMemesApiInterceptor(),
+  ];
+
+  static List<HomeMemesImageStruct>? homeMemesImages(dynamic response) =>
+      (getJsonField(
         response,
         r'''$.data.items''',
-      ));
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => HomeMemesImageStruct.maybeFromMap(x))
+          .withoutNulls
+          .toList();
 }
 
 class HomeMemesVideosCall {
   static Future<ApiCallResponse> call({
     String? q,
-    int? page = 1,
+    int? page = 0,
     String? tags,
+    int? limit = 10,
+    bool? isAll,
   }) async {
     q ??= '';
     tags ??= '';
 
-    return ApiManager.instance.makeApiCall(
-      callName: 'Home Memes Videos',
-      apiUrl: 'https://memesplanet.com/api/search',
-      callType: ApiCallType.GET,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      params: {
-        'q': q,
-        'type': "video",
-        'tags': tags,
-        'page': page,
-      },
-      returnBody: true,
-      encodeBodyUtf8: false,
-      decodeUtf8: true,
-      cache: false,
-      isStreamingApi: false,
-      alwaysAllowBody: false,
+    return FFApiInterceptor.makeApiCall(
+      ApiCallOptions(
+        callName: 'Home Memes Videos',
+        apiUrl: 'https://memesplanet.com/api/search',
+        callType: ApiCallType.GET,
+        headers: const {
+          'Content-Type': 'application/json',
+        },
+        params: {
+          'q': q,
+          'type': "video",
+          'tags': tags,
+          'page': page,
+          'limit': limit,
+          'all': isAll,
+        },
+        returnBody: true,
+        encodeBodyUtf8: false,
+        decodeUtf8: true,
+        cache: false,
+        isStreamingApi: false,
+        alwaysAllowBody: false,
+      ),
+      interceptors,
     );
   }
 
-  static HomeMemeVideoStruct? homeMemesVideos(dynamic response) =>
-      HomeMemeVideoStruct.maybeFromMap(getJsonField(
+  static final interceptors = [
+    SearchMemesApiInterceptor(),
+  ];
+
+  static List<HomeMemeVideoStruct>? homeMemesVideos(dynamic response) =>
+      (getJsonField(
         response,
         r'''$.data.items''',
-      ));
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => HomeMemeVideoStruct.maybeFromMap(x))
+          .withoutNulls
+          .toList();
 }
 
 class SearchMemesCall {
@@ -125,6 +191,7 @@ class SearchMemesCall {
     int? page = 1,
     String? tags = '',
     String? type = '',
+    int? limit = 10,
   }) async {
     return ApiManager.instance.makeApiCall(
       callName: 'Search Memes',
@@ -201,6 +268,37 @@ class IncMemeViewCall {
   }
 }
 
+class AddTagsCall {
+  static Future<ApiCallResponse> call({
+    String? memeId = '',
+    List<String>? tagsListList,
+  }) async {
+    final tagsList = _serializeList(tagsListList);
+
+    final ffApiRequestBody = '''
+{
+  "tags": $tagsList
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'Add Tags',
+      apiUrl: 'https://memesplanet.com/api/tags/$memeId',
+      callType: ApiCallType.POST,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
 class ApiPagingParams {
   int nextPageNumber = 0;
   int numItems = 0;
@@ -243,4 +341,15 @@ String _serializeJson(dynamic jsonVar, [bool isList = false]) {
     }
     return isList ? '[]' : '{}';
   }
+}
+
+String? escapeStringForJson(String? input) {
+  if (input == null) {
+    return null;
+  }
+  return input
+      .replaceAll('\\', '\\\\')
+      .replaceAll('"', '\\"')
+      .replaceAll('\n', '\\n')
+      .replaceAll('\t', '\\t');
 }

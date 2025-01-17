@@ -15,6 +15,7 @@ class MemesSearchStruct extends BaseStruct {
     int? laughsCount,
     int? viewsCount,
     String? type,
+    String? blurHash,
   })  : _id = id,
         _url = url,
         _width = width,
@@ -23,7 +24,8 @@ class MemesSearchStruct extends BaseStruct {
         _tags = tags,
         _laughsCount = laughsCount,
         _viewsCount = viewsCount,
-        _type = type;
+        _type = type,
+        _blurHash = blurHash;
 
   // "id" field.
   String? _id;
@@ -96,6 +98,13 @@ class MemesSearchStruct extends BaseStruct {
 
   bool hasType() => _type != null;
 
+  // "blur_hash" field.
+  String? _blurHash;
+  String get blurHash => _blurHash ?? '';
+  set blurHash(String? val) => _blurHash = val;
+
+  bool hasBlurHash() => _blurHash != null;
+
   static MemesSearchStruct fromMap(Map<String, dynamic> data) =>
       MemesSearchStruct(
         id: data['id'] as String?,
@@ -109,6 +118,7 @@ class MemesSearchStruct extends BaseStruct {
         laughsCount: castToType<int>(data['laughs_count']),
         viewsCount: castToType<int>(data['views_count']),
         type: data['type'] as String?,
+        blurHash: data['blur_hash'] as String?,
       );
 
   static MemesSearchStruct? maybeFromMap(dynamic data) => data is Map
@@ -125,6 +135,7 @@ class MemesSearchStruct extends BaseStruct {
         'laughs_count': _laughsCount,
         'views_count': _viewsCount,
         'type': _type,
+        'blur_hash': _blurHash,
       }.withoutNulls;
 
   @override
@@ -163,6 +174,10 @@ class MemesSearchStruct extends BaseStruct {
         ),
         'type': serializeParam(
           _type,
+          ParamType.String,
+        ),
+        'blur_hash': serializeParam(
+          _blurHash,
           ParamType.String,
         ),
       }.withoutNulls;
@@ -215,6 +230,11 @@ class MemesSearchStruct extends BaseStruct {
           ParamType.String,
           false,
         ),
+        blurHash: deserializeParam(
+          data['blur_hash'],
+          ParamType.String,
+          false,
+        ),
       );
 
   @override
@@ -231,12 +251,23 @@ class MemesSearchStruct extends BaseStruct {
         tags == other.tags &&
         laughsCount == other.laughsCount &&
         viewsCount == other.viewsCount &&
-        type == other.type;
+        type == other.type &&
+        blurHash == other.blurHash;
   }
 
   @override
-  int get hashCode => const ListEquality().hash(
-      [id, url, width, height, thumbnail, tags, laughsCount, viewsCount, type]);
+  int get hashCode => const ListEquality().hash([
+        id,
+        url,
+        width,
+        height,
+        thumbnail,
+        tags,
+        laughsCount,
+        viewsCount,
+        type,
+        blurHash
+      ]);
 }
 
 MemesSearchStruct createMemesSearchStruct({
@@ -249,6 +280,7 @@ MemesSearchStruct createMemesSearchStruct({
   int? laughsCount,
   int? viewsCount,
   String? type,
+  String? blurHash,
 }) =>
     MemesSearchStruct(
       id: id,
@@ -260,4 +292,5 @@ MemesSearchStruct createMemesSearchStruct({
       laughsCount: laughsCount,
       viewsCount: viewsCount,
       type: type,
+      blurHash: blurHash,
     );

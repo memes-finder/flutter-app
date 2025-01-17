@@ -15,6 +15,7 @@ class HomeMemeVideoStruct extends BaseStruct {
     int? laughsCount,
     int? viewsCount,
     String? type,
+    String? blurHash,
   })  : _id = id,
         _width = width,
         _height = height,
@@ -23,7 +24,8 @@ class HomeMemeVideoStruct extends BaseStruct {
         _thumbnail = thumbnail,
         _laughsCount = laughsCount,
         _viewsCount = viewsCount,
-        _type = type;
+        _type = type,
+        _blurHash = blurHash;
 
   // "id" field.
   String? _id;
@@ -96,6 +98,13 @@ class HomeMemeVideoStruct extends BaseStruct {
 
   bool hasType() => _type != null;
 
+  // "blur_hash" field.
+  String? _blurHash;
+  String get blurHash => _blurHash ?? '';
+  set blurHash(String? val) => _blurHash = val;
+
+  bool hasBlurHash() => _blurHash != null;
+
   static HomeMemeVideoStruct fromMap(Map<String, dynamic> data) =>
       HomeMemeVideoStruct(
         id: data['id'] as String?,
@@ -109,6 +118,7 @@ class HomeMemeVideoStruct extends BaseStruct {
         laughsCount: castToType<int>(data['laughs_count']),
         viewsCount: castToType<int>(data['views_count']),
         type: data['type'] as String?,
+        blurHash: data['blur_hash'] as String?,
       );
 
   static HomeMemeVideoStruct? maybeFromMap(dynamic data) => data is Map
@@ -125,6 +135,7 @@ class HomeMemeVideoStruct extends BaseStruct {
         'laughs_count': _laughsCount,
         'views_count': _viewsCount,
         'type': _type,
+        'blur_hash': _blurHash,
       }.withoutNulls;
 
   @override
@@ -163,6 +174,10 @@ class HomeMemeVideoStruct extends BaseStruct {
         ),
         'type': serializeParam(
           _type,
+          ParamType.String,
+        ),
+        'blur_hash': serializeParam(
+          _blurHash,
           ParamType.String,
         ),
       }.withoutNulls;
@@ -215,6 +230,11 @@ class HomeMemeVideoStruct extends BaseStruct {
           ParamType.String,
           false,
         ),
+        blurHash: deserializeParam(
+          data['blur_hash'],
+          ParamType.String,
+          false,
+        ),
       );
 
   @override
@@ -231,12 +251,23 @@ class HomeMemeVideoStruct extends BaseStruct {
         thumbnail == other.thumbnail &&
         laughsCount == other.laughsCount &&
         viewsCount == other.viewsCount &&
-        type == other.type;
+        type == other.type &&
+        blurHash == other.blurHash;
   }
 
   @override
-  int get hashCode => const ListEquality().hash(
-      [id, width, height, url, tags, thumbnail, laughsCount, viewsCount, type]);
+  int get hashCode => const ListEquality().hash([
+        id,
+        width,
+        height,
+        url,
+        tags,
+        thumbnail,
+        laughsCount,
+        viewsCount,
+        type,
+        blurHash
+      ]);
 }
 
 HomeMemeVideoStruct createHomeMemeVideoStruct({
@@ -249,6 +280,7 @@ HomeMemeVideoStruct createHomeMemeVideoStruct({
   int? laughsCount,
   int? viewsCount,
   String? type,
+  String? blurHash,
 }) =>
     HomeMemeVideoStruct(
       id: id,
@@ -260,4 +292,5 @@ HomeMemeVideoStruct createHomeMemeVideoStruct({
       laughsCount: laughsCount,
       viewsCount: viewsCount,
       type: type,
+      blurHash: blurHash,
     );

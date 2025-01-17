@@ -71,16 +71,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               'searchQuery',
               ParamType.String,
             ),
-            searchResultVideos: params.getParam<HomeMemeVideoStruct>(
-              'searchResultVideos',
-              ParamType.DataStruct,
-              isList: true,
-              structBuilder: HomeMemeVideoStruct.fromSerializableMap,
+            viewVideos: params.getParam(
+              'viewVideos',
+              ParamType.bool,
             ),
-            searchResultImages: params.getParam<HomeMemesImageStruct>(
-              'searchResultImages',
+          ),
+        ),
+        FFRoute(
+          name: 'ImageViewScreen',
+          path: '/imageViewScreen',
+          builder: (context, params) => ImageViewScreenWidget(
+            imageMeme: params.getParam(
+              'imageMeme',
               ParamType.DataStruct,
-              isList: true,
+              isList: false,
               structBuilder: HomeMemesImageStruct.fromSerializableMap,
             ),
           ),

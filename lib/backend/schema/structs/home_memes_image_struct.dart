@@ -14,6 +14,7 @@ class HomeMemesImageStruct extends BaseStruct {
     int? laughsCount,
     int? viewsCount,
     String? type,
+    String? blurHash,
   })  : _id = id,
         _width = width,
         _height = height,
@@ -21,7 +22,8 @@ class HomeMemesImageStruct extends BaseStruct {
         _tags = tags,
         _laughsCount = laughsCount,
         _viewsCount = viewsCount,
-        _type = type;
+        _type = type,
+        _blurHash = blurHash;
 
   // "id" field.
   String? _id;
@@ -87,6 +89,13 @@ class HomeMemesImageStruct extends BaseStruct {
 
   bool hasType() => _type != null;
 
+  // "blur_hash" field.
+  String? _blurHash;
+  String get blurHash => _blurHash ?? '';
+  set blurHash(String? val) => _blurHash = val;
+
+  bool hasBlurHash() => _blurHash != null;
+
   static HomeMemesImageStruct fromMap(Map<String, dynamic> data) =>
       HomeMemesImageStruct(
         id: data['id'] as String?,
@@ -99,6 +108,7 @@ class HomeMemesImageStruct extends BaseStruct {
         laughsCount: castToType<int>(data['laughs_count']),
         viewsCount: castToType<int>(data['views_count']),
         type: data['type'] as String?,
+        blurHash: data['blur_hash'] as String?,
       );
 
   static HomeMemesImageStruct? maybeFromMap(dynamic data) => data is Map
@@ -114,6 +124,7 @@ class HomeMemesImageStruct extends BaseStruct {
         'laughs_count': _laughsCount,
         'views_count': _viewsCount,
         'type': _type,
+        'blur_hash': _blurHash,
       }.withoutNulls;
 
   @override
@@ -148,6 +159,10 @@ class HomeMemesImageStruct extends BaseStruct {
         ),
         'type': serializeParam(
           _type,
+          ParamType.String,
+        ),
+        'blur_hash': serializeParam(
+          _blurHash,
           ParamType.String,
         ),
       }.withoutNulls;
@@ -195,6 +210,11 @@ class HomeMemesImageStruct extends BaseStruct {
           ParamType.String,
           false,
         ),
+        blurHash: deserializeParam(
+          data['blur_hash'],
+          ParamType.String,
+          false,
+        ),
       );
 
   @override
@@ -210,12 +230,13 @@ class HomeMemesImageStruct extends BaseStruct {
         tags == other.tags &&
         laughsCount == other.laughsCount &&
         viewsCount == other.viewsCount &&
-        type == other.type;
+        type == other.type &&
+        blurHash == other.blurHash;
   }
 
   @override
-  int get hashCode => const ListEquality()
-      .hash([id, width, height, url, tags, laughsCount, viewsCount, type]);
+  int get hashCode => const ListEquality().hash(
+      [id, width, height, url, tags, laughsCount, viewsCount, type, blurHash]);
 }
 
 HomeMemesImageStruct createHomeMemesImageStruct({
@@ -227,6 +248,7 @@ HomeMemesImageStruct createHomeMemesImageStruct({
   int? laughsCount,
   int? viewsCount,
   String? type,
+  String? blurHash,
 }) =>
     HomeMemesImageStruct(
       id: id,
@@ -237,4 +259,5 @@ HomeMemesImageStruct createHomeMemesImageStruct({
       laughsCount: laughsCount,
       viewsCount: viewsCount,
       type: type,
+      blurHash: blurHash,
     );

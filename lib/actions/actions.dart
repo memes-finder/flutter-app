@@ -8,6 +8,7 @@ Future getHomeContent(BuildContext context) async {
   ApiCallResponse? apiResultTrendingTags;
   ApiCallResponse? apiResultHomeMemesImages;
   ApiCallResponse? apiResultHomeMemesVideos;
+  ApiCallResponse? apiResultSuggestedTags;
 
   await Future.wait([
     Future(() async {
@@ -54,6 +55,15 @@ Future getHomeContent(BuildContext context) async {
           .withoutNulls
           .toList()
           .cast<HomeMemeVideoStruct>();
+    }),
+    Future(() async {
+      apiResultSuggestedTags = await SuggestedTagsCall.call();
+
+      FFAppState().suggestedTagsAppState = SuggestedTagsCall.suggestedTagsList(
+        (apiResultSuggestedTags?.jsonBody ?? ''),
+      )!
+          .toList()
+          .cast<SuggestedTagsItemStruct>();
     }),
   ]);
 }

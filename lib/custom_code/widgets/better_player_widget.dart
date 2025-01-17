@@ -43,12 +43,24 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
     _betterPlayerController = BetterPlayerController(
       BetterPlayerConfiguration(
         aspectRatio: 9 / 16,
-        fit: BoxFit.contain,
+        fit: BoxFit.cover,
         autoPlay: true,
         looping: true,
+        controlsConfiguration: BetterPlayerControlsConfiguration(
+          showControls: false, // Hide controls for clean look
+          enableFullscreen: false,
+        ),
       ),
       betterPlayerDataSource: dataSource,
     );
+  }
+
+  void _togglePlayPause() {
+    if (_betterPlayerController.isPlaying()!) {
+      _betterPlayerController.pause();
+    } else {
+      _betterPlayerController.play();
+    }
   }
 
   @override
@@ -59,11 +71,14 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: widget.width,
-      height: widget.height,
-      child: BetterPlayer(
-        controller: _betterPlayerController,
+    return GestureDetector(
+      onTap: _togglePlayPause, // Detect tap to toggle play/pause
+      child: SizedBox(
+        width: widget.width,
+        height: widget.height,
+        child: BetterPlayer(
+          controller: _betterPlayerController,
+        ),
       ),
     );
   }
