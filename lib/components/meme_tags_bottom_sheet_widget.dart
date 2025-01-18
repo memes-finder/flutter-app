@@ -157,7 +157,11 @@ class _MemeTagsBottomSheetWidgetState extends State<MemeTagsBottomSheetWidget> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      if (_model.isAddTags)
+                      if (_model.isAddTags &&
+                          responsiveVisibility(
+                            context: context,
+                            phone: false,
+                          ))
                         Flexible(
                           child: Column(
                             mainAxisSize: MainAxisSize.max,

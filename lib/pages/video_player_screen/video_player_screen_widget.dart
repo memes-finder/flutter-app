@@ -1,6 +1,7 @@
 import '/backend/api_requests/api_calls.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/meme_tags_bottom_sheet_widget.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -47,6 +48,8 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
           );
         }(),
       );
+      _model.videoMemeLocal = widget.videoMeme;
+      safeSetState(() {});
     });
   }
 
@@ -145,24 +148,6 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
-                                              if (responsiveVisibility(
-                                                context: context,
-                                                phone: false,
-                                                tablet: false,
-                                                tabletLandscape: false,
-                                                desktop: false,
-                                              ))
-                                                SizedBox(
-                                                  width: double.infinity,
-                                                  height: double.infinity,
-                                                  child: custom_widgets
-                                                      .BetterPlayerWidget(
-                                                    width: double.infinity,
-                                                    height: double.infinity,
-                                                    videoUrl:
-                                                        widget.videoMeme!.url,
-                                                  ),
-                                                ),
                                               Flexible(
                                                 child: SizedBox(
                                                   width:
@@ -194,6 +179,12 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                                                         page: nextPageMarker
                                                             .nextPageNumber,
                                                         isAll: true,
+                                                        memeId: nextPageMarker
+                                                                    .nextPageNumber ==
+                                                                0
+                                                            ? widget
+                                                                .videoMeme?.id
+                                                            : '',
                                                       ),
                                                     ),
                                                     pageController: _model
@@ -310,7 +301,7 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                                                                           0.0,
                                                                           0.0,
                                                                           15.0,
-                                                                          35.0),
+                                                                          30.0),
                                                                       child:
                                                                           Column(
                                                                         mainAxisSize:
@@ -320,57 +311,82 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                                                                         crossAxisAlignment:
                                                                             CrossAxisAlignment.end,
                                                                         children: [
-                                                                          Opacity(
-                                                                            opacity:
-                                                                                0.5,
+                                                                          Flexible(
                                                                             child:
-                                                                                Container(
-                                                                              width: 53.0,
-                                                                              height: 80.0,
-                                                                              decoration: BoxDecoration(
-                                                                                color: FlutterFlowTheme.of(context).primaryText,
-                                                                                borderRadius: BorderRadius.circular(5.0),
-                                                                              ),
+                                                                                Opacity(
+                                                                              opacity: 0.5,
                                                                               child: Padding(
-                                                                                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 5.0, 0.0, 5.0),
-                                                                                child: Column(
-                                                                                  mainAxisSize: MainAxisSize.min,
-                                                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                                  children: [
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 5.0, 10.0),
-                                                                                      child: Row(
-                                                                                        mainAxisSize: MainAxisSize.max,
-                                                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                                                        children: [
-                                                                                          Padding(
-                                                                                            padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 4.0, 0.0),
-                                                                                            child: Icon(
-                                                                                              Icons.remove_red_eye,
-                                                                                              color: FlutterFlowTheme.of(context).info,
-                                                                                              size: 25.0,
-                                                                                            ),
-                                                                                          ),
-                                                                                          Text(
-                                                                                            valueOrDefault<String>(
-                                                                                              homeMemeVideosItemItem.viewsCount.toString(),
-                                                                                              '0',
-                                                                                            ),
-                                                                                            style: FlutterFlowTheme.of(context).labelSmall.override(
-                                                                                                  fontFamily: 'Inter',
-                                                                                                  color: FlutterFlowTheme.of(context).accent4,
-                                                                                                  fontSize: 20.0,
-                                                                                                  letterSpacing: 0.0,
+                                                                                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 5.0),
+                                                                                child: Container(
+                                                                                  width: 50.0,
+                                                                                  height: 30.0,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: FlutterFlowTheme.of(context).primaryText,
+                                                                                    borderRadius: BorderRadius.circular(5.0),
+                                                                                  ),
+                                                                                  child: Padding(
+                                                                                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 5.0, 0.0, 5.0),
+                                                                                    child: Column(
+                                                                                      mainAxisSize: MainAxisSize.min,
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                                      children: [
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 3.0, 0.0),
+                                                                                          child: Row(
+                                                                                            mainAxisSize: MainAxisSize.max,
+                                                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                            children: [
+                                                                                              Padding(
+                                                                                                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 4.0, 0.0),
+                                                                                                child: Icon(
+                                                                                                  Icons.remove_red_eye,
+                                                                                                  color: FlutterFlowTheme.of(context).info,
+                                                                                                  size: 20.0,
                                                                                                 ),
+                                                                                              ),
+                                                                                              Text(
+                                                                                                valueOrDefault<String>(
+                                                                                                  homeMemeVideosItemItem.viewsCount.toString(),
+                                                                                                  '0',
+                                                                                                ),
+                                                                                                style: FlutterFlowTheme.of(context).labelSmall.override(
+                                                                                                      fontFamily: 'Inter',
+                                                                                                      color: FlutterFlowTheme.of(context).accent4,
+                                                                                                      fontSize: 15.0,
+                                                                                                      letterSpacing: 0.0,
+                                                                                                    ),
+                                                                                              ),
+                                                                                            ],
                                                                                           ),
-                                                                                        ],
-                                                                                      ),
+                                                                                        ),
+                                                                                      ],
                                                                                     ),
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 5.0, 0.0),
-                                                                                      child: Row(
-                                                                                        mainAxisSize: MainAxisSize.max,
-                                                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          Flexible(
+                                                                            child:
+                                                                                Opacity(
+                                                                              opacity: 0.5,
+                                                                              child: Container(
+                                                                                width: 50.0,
+                                                                                height: 30.0,
+                                                                                decoration: BoxDecoration(
+                                                                                  color: FlutterFlowTheme.of(context).primaryText,
+                                                                                  borderRadius: BorderRadius.circular(5.0),
+                                                                                ),
+                                                                                child: Padding(
+                                                                                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 5.0, 0.0, 5.0),
+                                                                                  child: Column(
+                                                                                    mainAxisSize: MainAxisSize.min,
+                                                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                                    children: [
+                                                                                      Row(
+                                                                                        mainAxisSize: MainAxisSize.min,
+                                                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                                                         children: [
                                                                                           Padding(
                                                                                             padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 4.0, 0.0),
@@ -401,7 +417,7 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                                                                                               child: const FaIcon(
                                                                                                 FontAwesomeIcons.solidLaughSquint,
                                                                                                 color: Color(0xFFD0A11D),
-                                                                                                size: 22.0,
+                                                                                                size: 17.0,
                                                                                               ),
                                                                                             ),
                                                                                           ),
@@ -409,7 +425,7 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                                                                                             style: FlutterFlowTheme.of(context).labelSmall.override(
                                                                                                   fontFamily: 'Inter',
                                                                                                   color: FlutterFlowTheme.of(context).accent4,
-                                                                                                  fontSize: 20.0,
+                                                                                                  fontSize: 17.0,
                                                                                                   letterSpacing: 0.0,
                                                                                                 ),
                                                                                             duration: const Duration(milliseconds: 600),
@@ -423,8 +439,8 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                                                                                           ),
                                                                                         ],
                                                                                       ),
-                                                                                    ),
-                                                                                  ],
+                                                                                    ],
+                                                                                  ),
                                                                                 ),
                                                                               ),
                                                                             ),
@@ -466,8 +482,8 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                                                                                 size: 25.0,
                                                                               ),
                                                                               options: FFButtonOptions(
-                                                                                width: 55.0,
-                                                                                height: 55.0,
+                                                                                width: 50.0,
+                                                                                height: 50.0,
                                                                                 padding: const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 5.0, 0.0),
                                                                                 iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                                                                                 color: FlutterFlowTheme.of(context).primary,
@@ -479,6 +495,53 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                                                                                 elevation: 0.0,
                                                                                 borderRadius: BorderRadius.circular(8.0),
                                                                               ),
+                                                                            ),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                                0.0,
+                                                                                10.0,
+                                                                                0.0,
+                                                                                0.0),
+                                                                            child:
+                                                                                FlutterFlowIconButton(
+                                                                              borderRadius: 8.0,
+                                                                              buttonSize: 49.0,
+                                                                              fillColor: FlutterFlowTheme.of(context).secondary,
+                                                                              icon: Icon(
+                                                                                Icons.download,
+                                                                                color: FlutterFlowTheme.of(context).info,
+                                                                                size: 24.0,
+                                                                              ),
+                                                                              onPressed: () async {
+                                                                                _model.apiResult69v = await DownloadMemeCall.call(
+                                                                                  id: valueOrDefault<String>(
+                                                                                    homeMemeVideosItemItem.id,
+                                                                                    '0',
+                                                                                  ),
+                                                                                );
+
+                                                                                if ((_model.apiResult69v?.succeeded ?? true)) {
+                                                                                  await launchURL(DownloadMemeCall.downloadUrl(
+                                                                                    (_model.apiResult69v?.jsonBody ?? ''),
+                                                                                  )!);
+                                                                                } else {
+                                                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                                                    SnackBar(
+                                                                                      content: Text(
+                                                                                        'Failed to download meme',
+                                                                                        style: TextStyle(
+                                                                                          color: FlutterFlowTheme.of(context).primaryText,
+                                                                                        ),
+                                                                                      ),
+                                                                                      duration: const Duration(milliseconds: 4000),
+                                                                                      backgroundColor: FlutterFlowTheme.of(context).secondary,
+                                                                                    ),
+                                                                                  );
+                                                                                }
+
+                                                                                safeSetState(() {});
+                                                                              },
                                                                             ),
                                                                           ),
                                                                         ],

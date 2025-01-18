@@ -26,6 +26,9 @@ class VideoPlayerScreenModel extends FlutterFlowModel<VideoPlayerScreenWidget> {
   PagingController<ApiPagingParams, dynamic>? pageViewPagingController;
   Function(ApiPagingParams nextPageMarker)? pageViewApiCall;
 
+  // Stores action output result for [Backend Call - API (DownloadMeme)] action in IconButton widget.
+  ApiCallResponse? apiResult69v;
+
   @override
   void initState(BuildContext context) {}
 

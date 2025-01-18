@@ -2,6 +2,7 @@ import '/backend/api_requests/api_calls.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/meme_tags_bottom_sheet_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
@@ -89,7 +90,7 @@ class _ImageViewScreenWidgetState extends State<ImageViewScreenWidget> {
         backgroundColor: FlutterFlowTheme.of(context).primary,
         elevation: 8.0,
         child: Icon(
-          Icons.tag,
+          Icons.label_outline,
           color: FlutterFlowTheme.of(context).info,
           size: 24.0,
         ),
@@ -231,6 +232,47 @@ class _ImageViewScreenWidgetState extends State<ImageViewScreenWidget> {
                                     ),
                               ),
                             ],
+                          ),
+                          FlutterFlowIconButton(
+                            borderRadius: 8.0,
+                            buttonSize: 30.0,
+                            fillColor: FlutterFlowTheme.of(context).secondary,
+                            icon: Icon(
+                              Icons.download,
+                              color: FlutterFlowTheme.of(context).info,
+                              size: 15.0,
+                            ),
+                            onPressed: () async {
+                              _model.apiResult69v = await DownloadMemeCall.call(
+                                id: valueOrDefault<String>(
+                                  widget.imageMeme?.id,
+                                  '0',
+                                ),
+                              );
+
+                              if ((_model.apiResult69v?.succeeded ?? true)) {
+                                await launchURL(DownloadMemeCall.downloadUrl(
+                                  (_model.apiResult69v?.jsonBody ?? ''),
+                                )!);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Failed to download meme',
+                                      style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                      ),
+                                    ),
+                                    duration: const Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context).secondary,
+                                  ),
+                                );
+                              }
+
+                              safeSetState(() {});
+                            },
                           ),
                         ],
                       ),

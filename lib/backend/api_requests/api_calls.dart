@@ -138,9 +138,11 @@ class HomeMemesVideosCall {
     String? tags,
     int? limit = 10,
     bool? isAll,
+    String? memeId,
   }) async {
     q ??= '';
     tags ??= '';
+    memeId ??= '';
 
     return FFApiInterceptor.makeApiCall(
       ApiCallOptions(
@@ -157,6 +159,7 @@ class HomeMemesVideosCall {
           'page': page,
           'limit': limit,
           'all': isAll,
+          'memeId': memeId,
         },
         returnBody: true,
         encodeBodyUtf8: false,
@@ -297,6 +300,38 @@ class AddTagsCall {
       alwaysAllowBody: false,
     );
   }
+}
+
+class DownloadMemeCall {
+  static Future<ApiCallResponse> call({
+    String? id,
+  }) async {
+    id ??= '';
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'DownloadMeme',
+      apiUrl: 'https://memesplanet.com/api/download/$id',
+      callType: ApiCallType.GET,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        'download': 1,
+      },
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  static String? downloadUrl(dynamic response) =>
+      castToType<String>(getJsonField(
+        response,
+        r'''$.data.url''',
+      ));
 }
 
 class ApiPagingParams {

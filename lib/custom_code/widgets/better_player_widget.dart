@@ -43,7 +43,7 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
     _betterPlayerController = BetterPlayerController(
       BetterPlayerConfiguration(
         aspectRatio: 9 / 16,
-        fit: BoxFit.cover,
+        fit: BoxFit.contain,
         autoPlay: true,
         looping: true,
         controlsConfiguration: BetterPlayerControlsConfiguration(
