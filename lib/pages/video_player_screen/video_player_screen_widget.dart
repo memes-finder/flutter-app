@@ -1,6 +1,7 @@
 import '/backend/api_requests/api_calls.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/meme_tags_bottom_sheet_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -10,6 +11,7 @@ import '/actions/actions.dart' as action_blocks;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'video_player_screen_model.dart';
@@ -28,10 +30,13 @@ class VideoPlayerScreenWidget extends StatefulWidget {
       _VideoPlayerScreenWidgetState();
 }
 
-class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
+class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget>
+    with TickerProviderStateMixin {
   late VideoPlayerScreenModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -51,6 +56,28 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
       _model.videoMemeLocal = widget.videoMeme;
       safeSetState(() {});
     });
+
+    animationsMap.addAll({
+      'iconOnActionTriggerAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onActionTrigger,
+        applyInitialState: true,
+        effectsBuilder: () => [
+          ScaleEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(1.0, 1.0),
+            end: const Offset(1.0, 1.0),
+          ),
+        ],
+      ),
+    });
+    setupAnimations(
+      animationsMap.values.where((anim) =>
+          anim.trigger == AnimationTrigger.onActionTrigger ||
+          !anim.applyInitialState),
+      this,
+    );
   }
 
   @override
@@ -196,14 +223,19 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                                                                     0,
                                                                     _model.pageViewLoadedLength -
                                                                         1))),
-                                                    onPageChanged: (_) =>
-                                                        safeSetState(() {
+                                                    onPageChanged: (_) async {
                                                       _model.pageViewLoadedLength =
                                                           _model
                                                               .pageViewPagingController!
                                                               .itemList!
                                                               .length;
-                                                    }),
+                                                      _model.videoMemeLocal =
+                                                          homeMemeVideosItem
+                                                              .elementAtOrNull(
+                                                                  _model
+                                                                      .pageViewCurrentIndex);
+                                                      safeSetState(() {});
+                                                    },
                                                     scrollDirection:
                                                         Axis.vertical,
                                                     builderDelegate:
@@ -285,6 +317,8 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                                                                                 MediaQuery.sizeOf(context).height * 1.0,
                                                                             videoUrl:
                                                                                 homeMemeVideosItemItem.url,
+                                                                            blurHash:
+                                                                                homeMemeVideosItemItem.blurHash,
                                                                           ),
                                                                         ),
                                                                       ),
@@ -419,6 +453,8 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                                                                                                 color: Color(0xFFD0A11D),
                                                                                                 size: 17.0,
                                                                                               ),
+                                                                                            ).animateOnActionTrigger(
+                                                                                              animationsMap['iconOnActionTriggerAnimation']!,
                                                                                             ),
                                                                                           ),
                                                                                           AnimatedDefaultTextStyle(
@@ -432,7 +468,7 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget> {
                                                                                             curve: Curves.bounceOut,
                                                                                             child: Text(
                                                                                               valueOrDefault<String>(
-                                                                                                homeMemeVideosItemItem.laughsCount.toString(),
+                                                                                                _model.videoMemeLocal?.laughsCount.toString(),
                                                                                                 '0',
                                                                                               ),
                                                                                             ),

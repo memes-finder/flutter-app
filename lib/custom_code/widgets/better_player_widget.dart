@@ -13,15 +13,18 @@ import 'package:flutter/material.dart';
 // boilerplate code using the green button on the right!
 
 import 'package:better_player/better_player.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 
 class BetterPlayerWidget extends StatefulWidget {
   final String videoUrl;
+  final String? blurHash;
   final double width;
   final double height;
 
   const BetterPlayerWidget({
     Key? key,
     required this.videoUrl,
+    this.blurHash,
     required this.width,
     required this.height,
   }) : super(key: key);
@@ -32,6 +35,7 @@ class BetterPlayerWidget extends StatefulWidget {
 
 class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
   late BetterPlayerController _betterPlayerController;
+  bool _isVideoInitialized = false;
 
   @override
   void initState() {
@@ -50,9 +54,18 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
           showControls: false, // Hide controls for clean look
           enableFullscreen: false,
         ),
+        eventListener: _handleVideoEvent, // Listen for video events
       ),
       betterPlayerDataSource: dataSource,
     );
+  }
+
+  void _handleVideoEvent(BetterPlayerEvent event) {
+    if (event.betterPlayerEventType == BetterPlayerEventType.initialized) {
+      setState(() {
+        _isVideoInitialized = true;
+      });
+    }
   }
 
   void _togglePlayPause() {
@@ -76,8 +89,22 @@ class _BetterPlayerWidgetState extends State<BetterPlayerWidget> {
       child: SizedBox(
         width: widget.width,
         height: widget.height,
-        child: BetterPlayer(
-          controller: _betterPlayerController,
+        child: Stack(
+          children: [
+            if (!_isVideoInitialized && widget.blurHash != null) ...[
+              // Show BlurHash thumbnail if provided
+              BlurHash(
+                hash: widget.blurHash!,
+                imageFit: BoxFit.cover,
+              ),
+            ],
+            if (_isVideoInitialized) ...[
+              // Show video player when initialized
+              BetterPlayer(
+                controller: _betterPlayerController,
+              ),
+            ],
+          ],
         ),
       ),
     );
