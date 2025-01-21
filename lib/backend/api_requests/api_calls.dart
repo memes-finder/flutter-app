@@ -334,6 +334,37 @@ class DownloadMemeCall {
       ));
 }
 
+class NotificationsCall {
+  static Future<ApiCallResponse> call() async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'Notifications',
+      apiUrl: 'https://memesplanet.com/api/notifications',
+      callType: ApiCallType.GET,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: true,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  static List<NotificationStruct>? notificationsList(dynamic response) =>
+      (getJsonField(
+        response,
+        r'''$.data.items''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => NotificationStruct.maybeFromMap(x))
+          .withoutNulls
+          .toList();
+}
+
 class ApiPagingParams {
   int nextPageNumber = 0;
   int numItems = 0;

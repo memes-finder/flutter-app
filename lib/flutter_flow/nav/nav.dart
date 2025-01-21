@@ -88,6 +88,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               structBuilder: HomeMemesImageStruct.fromSerializableMap,
             ),
           ),
+        ),
+        FFRoute(
+          name: 'Notifications',
+          path: '/notifications',
+          builder: (context, params) => NotificationsWidget(
+            notifications: params.getParam<NotificationStruct>(
+              'notifications',
+              ParamType.DataStruct,
+              isList: true,
+              structBuilder: NotificationStruct.fromSerializableMap,
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

@@ -136,7 +136,7 @@ class _ImageViewScreenWidgetState extends State<ImageViewScreenWidget> {
                       ),
                       width: MediaQuery.sizeOf(context).width * 1.0,
                       height: MediaQuery.sizeOf(context).height * 0.5,
-                      fit: BoxFit.fitWidth,
+                      fit: BoxFit.fill,
                     ),
                     Padding(
                       padding:
@@ -197,8 +197,10 @@ class _ImageViewScreenWidgetState extends State<ImageViewScreenWidget> {
                                 curve: Curves.bounceOut,
                                 child: Text(
                                   valueOrDefault<String>(
-                                    _model.imageMemeLocal?.laughsCount
-                                        .toString(),
+                                    formatNumber(
+                                      _model.imageMemeLocal?.laughsCount,
+                                      formatType: FormatType.compact,
+                                    ),
                                     '0',
                                   ),
                                 ),
@@ -220,7 +222,10 @@ class _ImageViewScreenWidgetState extends State<ImageViewScreenWidget> {
                               ),
                               Text(
                                 valueOrDefault<String>(
-                                  widget.imageMeme?.viewsCount.toString(),
+                                  formatNumber(
+                                    widget.imageMeme?.viewsCount,
+                                    formatType: FormatType.compact,
+                                  ),
                                   '0',
                                 ),
                                 style: FlutterFlowTheme.of(context)

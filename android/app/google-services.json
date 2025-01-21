@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "1038614189555",
+    "project_id": "memesplanet-8c245",
+    "storage_bucket": "memesplanet-8c245.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038614189555:android:1e34dcbeadfc30b9bd6e86",
+        "android_client_info": {
+          "package_name": "com.memes.memesplanet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwfgvEE3d_wRGM2kkO9zaeciU5-XFBomg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038614189555:android:8839a5cfaf9100e5bd6e86",
+        "android_client_info": {
+          "package_name": "com.memesplanetfinder.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwfgvEE3d_wRGM2kkO9zaeciU5-XFBomg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038614189555:android:53737cdd95cd867bbd6e86",
+        "android_client_info": {
+          "package_name": "com.mycompany.memesplanet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwfgvEE3d_wRGM2kkO9zaeciU5-XFBomg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,6 +7,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'dart:async';
+import 'package:badges/badges.dart' as badges;
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
@@ -92,6 +93,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                     size: 24.0,
                   ),
                   onPressed: () async {
+                    safeSetState(() {
+                      _model.trendingTagsChipsValueController?.reset();
+                    });
                     await Future.wait([
                       Future(() async {
                         safeSetState(() => _model.apiRequestCompleter3 = null);
@@ -109,6 +113,83 @@ class _HomeWidgetState extends State<HomeWidget> {
                             minWait: 1, maxWait: 2);
                       }),
                     ]);
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+                child: FutureBuilder<ApiCallResponse>(
+                  future: NotificationsCall.call(),
+                  builder: (context, snapshot) {
+                    // Customize what your widget looks like when it's loading.
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: SizedBox(
+                          width: 50.0,
+                          height: 50.0,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              FlutterFlowTheme.of(context).primary,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    final badgeNotificationsResponse = snapshot.data!;
+
+                    return badges.Badge(
+                      badgeContent: Text(
+                        '',
+                        style: FlutterFlowTheme.of(context).titleSmall.override(
+                              fontFamily: 'Inter Tight',
+                              color: Colors.white,
+                              fontSize: 13.0,
+                              letterSpacing: 0.0,
+                              lineHeight: 1.0,
+                            ),
+                      ),
+                      showBadge: (NotificationsCall.notificationsList(
+                                    badgeNotificationsResponse.jsonBody,
+                                  ) !=
+                                  null &&
+                              (NotificationsCall.notificationsList(
+                                badgeNotificationsResponse.jsonBody,
+                              ))!
+                                  .isNotEmpty) ==
+                          true,
+                      shape: badges.BadgeShape.circle,
+                      badgeColor: FlutterFlowTheme.of(context).primary,
+                      elevation: 5.0,
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 8.0, 8.0),
+                      position: badges.BadgePosition.topEnd(),
+                      animationType: badges.BadgeAnimationType.scale,
+                      toAnimate: true,
+                      child: FlutterFlowIconButton(
+                        borderRadius: 8.0,
+                        buttonSize: 40.0,
+                        fillColor: const Color(0xFFF99F58),
+                        icon: Icon(
+                          Icons.notifications_sharp,
+                          color: FlutterFlowTheme.of(context).info,
+                          size: 24.0,
+                        ),
+                        onPressed: () async {
+                          context.pushNamed(
+                            'Notifications',
+                            queryParameters: {
+                              'notifications': serializeParam(
+                                NotificationsCall.notificationsList(
+                                  badgeNotificationsResponse.jsonBody,
+                                ),
+                                ParamType.DataStruct,
+                                isList: true,
+                              ),
+                            }.withoutNulls,
+                          );
+                        },
+                      ),
+                    );
                   },
                 ),
               ),
@@ -612,9 +693,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                               child: Text(
                                                                 valueOrDefault<
                                                                     String>(
-                                                                  homeImagesCarouselItem
-                                                                      .laughsCount
-                                                                      .toString(),
+                                                                  formatNumber(
+                                                                    homeImagesCarouselItem
+                                                                        .laughsCount,
+                                                                    formatType:
+                                                                        FormatType
+                                                                            .compact,
+                                                                  ),
                                                                   '0',
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
@@ -648,9 +733,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                             Text(
                                                               valueOrDefault<
                                                                   String>(
-                                                                homeImagesCarouselItem
-                                                                    .viewsCount
-                                                                    .toString(),
+                                                                formatNumber(
+                                                                  homeImagesCarouselItem
+                                                                      .viewsCount,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .compact,
+                                                                ),
                                                                 '0',
                                                               ),
                                                               style: FlutterFlowTheme

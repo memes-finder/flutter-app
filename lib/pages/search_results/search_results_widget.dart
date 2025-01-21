@@ -482,9 +482,13 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget>
                                                               child: Text(
                                                                 valueOrDefault<
                                                                     String>(
-                                                                  searchImageResultsGridItem
-                                                                      .laughsCount
-                                                                      .toString(),
+                                                                  formatNumber(
+                                                                    searchImageResultsGridItem
+                                                                        .laughsCount,
+                                                                    formatType:
+                                                                        FormatType
+                                                                            .compact,
+                                                                  ),
                                                                   '0',
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
@@ -518,9 +522,13 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget>
                                                             Text(
                                                               valueOrDefault<
                                                                   String>(
-                                                                searchImageResultsGridItem
-                                                                    .viewsCount
-                                                                    .toString(),
+                                                                formatNumber(
+                                                                  searchImageResultsGridItem
+                                                                      .viewsCount,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .compact,
+                                                                ),
                                                                 '0',
                                                               ),
                                                               style: FlutterFlowTheme
@@ -754,9 +762,13 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget>
                                                               child: Text(
                                                                 valueOrDefault<
                                                                     String>(
-                                                                  searchVideoResultsGridItem
-                                                                      .laughsCount
-                                                                      .toString(),
+                                                                  formatNumber(
+                                                                    searchVideoResultsGridItem
+                                                                        .laughsCount,
+                                                                    formatType:
+                                                                        FormatType
+                                                                            .compact,
+                                                                  ),
                                                                   '0',
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
@@ -790,9 +802,13 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget>
                                                             Text(
                                                               valueOrDefault<
                                                                   String>(
-                                                                searchVideoResultsGridItem
-                                                                    .viewsCount
-                                                                    .toString(),
+                                                                formatNumber(
+                                                                  searchVideoResultsGridItem
+                                                                      .viewsCount,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .compact,
+                                                                ),
                                                                 '0',
                                                               ),
                                                               style: FlutterFlowTheme

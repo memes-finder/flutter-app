@@ -98,9 +98,8 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget>
         key: scaffoldKey,
         backgroundColor: const Color(0xFF0D0D0D),
         appBar: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).primaryText,
-          iconTheme: IconThemeData(
-              color: FlutterFlowTheme.of(context).secondaryBackground),
+          backgroundColor: const Color(0xFF0D0D0D),
+          iconTheme: const IconThemeData(color: Colors.white),
           automaticallyImplyLeading: true,
           title: Row(
             mainAxisSize: MainAxisSize.max,
@@ -223,19 +222,14 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget>
                                                                     0,
                                                                     _model.pageViewLoadedLength -
                                                                         1))),
-                                                    onPageChanged: (_) async {
+                                                    onPageChanged: (_) =>
+                                                        safeSetState(() {
                                                       _model.pageViewLoadedLength =
                                                           _model
                                                               .pageViewPagingController!
                                                               .itemList!
                                                               .length;
-                                                      _model.videoMemeLocal =
-                                                          homeMemeVideosItem
-                                                              .elementAtOrNull(
-                                                                  _model
-                                                                      .pageViewCurrentIndex);
-                                                      safeSetState(() {});
-                                                    },
+                                                    }),
                                                     scrollDirection:
                                                         Axis.vertical,
                                                     builderDelegate:
@@ -371,17 +365,20 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget>
                                                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                                                             children: [
-                                                                                              Padding(
-                                                                                                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 4.0, 0.0),
+                                                                                              const Padding(
+                                                                                                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 4.0, 0.0),
                                                                                                 child: Icon(
                                                                                                   Icons.remove_red_eye,
-                                                                                                  color: FlutterFlowTheme.of(context).info,
+                                                                                                  color: Colors.white,
                                                                                                   size: 20.0,
                                                                                                 ),
                                                                                               ),
                                                                                               Text(
                                                                                                 valueOrDefault<String>(
-                                                                                                  homeMemeVideosItemItem.viewsCount.toString(),
+                                                                                                  formatNumber(
+                                                                                                    homeMemeVideosItemItem.viewsCount,
+                                                                                                    formatType: FormatType.compact,
+                                                                                                  ),
                                                                                                   '0',
                                                                                                 ),
                                                                                                 style: FlutterFlowTheme.of(context).labelSmall.override(
@@ -468,7 +465,10 @@ class _VideoPlayerScreenWidgetState extends State<VideoPlayerScreenWidget>
                                                                                             curve: Curves.bounceOut,
                                                                                             child: Text(
                                                                                               valueOrDefault<String>(
-                                                                                                _model.videoMemeLocal?.laughsCount.toString(),
+                                                                                                formatNumber(
+                                                                                                  _model.videoMemeLocal?.laughsCount,
+                                                                                                  formatType: FormatType.compact,
+                                                                                                ),
                                                                                                 '0',
                                                                                               ),
                                                                                             ),
